@@ -8,8 +8,8 @@ import (
 	"log"
 	"net/http"
 	// "html/template"
-	// "github.com/AufaIzza/asbc/api"
-	"github.com/AufaIzza/asbc/site"
+	// "github.com/AufaIzza/ASBC/api"
+	"github.com/AufaIzza/ASBC/site"
 )
 
 // func rootHandler(w http.ResponseWriter, req *http.Request) {

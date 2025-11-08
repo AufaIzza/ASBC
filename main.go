@@ -1,15 +1,19 @@
 package main
 
 import (
-	"io"
+	// "io"
 	// "os"
 	// "bytes"
 	"fmt"
 	// "log"
 	"net/http"
 	"html/template"
+	"database/sql"
 	// "github.com/AufaIzza/ASBC/api"
 	"github.com/AufaIzza/ASBC/helper"
+	// "github.com/mattn/go-sqlite3"
+	"modernc.org/sqlite"
+	"flag"
 )
 
 // func rootHandler(w http.ResponseWriter, req *http.Request) {
@@ -18,17 +22,17 @@ import (
 // 	}
 // }
 
+// type Page struct {
+// 	page string
+// }
+
+// func (p Page) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+// 	if req.Method == http.MethodGet {
+// 		io.WriteString(w, p.page)
+// 	}
+// }
+
 var err error 
-
-type Page struct {
-	page string
-}
-
-func (p Page) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-	if req.Method == http.MethodGet {
-		io.WriteString(w, p.page)
-	}
-}
 
 type Site struct {
 	Mux *http.ServeMux
@@ -66,6 +70,72 @@ func (s *Site) StaticPath(path string) {
 }
 
 func main() {
+	
+}
+
+func flags_test() {
+	is := flag.Bool("clear-db", false, "Clears the database")
+	flag.Parse()
+	if *is {
+		fmt.Println("Cleaning Database")
+	} else {
+		fmt.Println("Doing nothing")		
+	}
+}
+
+func db_test() {
+	db, err := sql.Open("sqlite", "./test.db")
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
+	fmt.Println("Db Connected")
+	_, err = db.Exec(`PRAGMA foreign_keys = ON;`)
+	if err != nil {
+		panic(err)
+	}
+	_, err = db.Exec(`DROP TABLE IF EXISTS posts;
+DROP TABLE IF EXISTS users;
+CREATE TABLE users(
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    name TEXT NOT NULL,
+    password TEXT NOT NULL
+);
+CREATE TABLE posts(
+    id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    userid INTEGER NOT NULL,
+    content TEXT,
+    FOREIGN KEY (userid) REFERENCES users(id)
+);
+INSERT INTO users (name, password) VALUES ('Bran', 'Lain');
+INSERT INTO users (name, password) VALUES ('Lain', 'Bran');
+INSERT INTO posts (userid, content) VALUES (1, 'HELLO WORLD I AM HERE');`)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println("Table created and inserted")
+	res, err := db.Query(`SELECT * FROM users`)
+	if err != nil {
+		panic(err)
+	}
+	columns, err := res.Columns()
+	if err != nil {
+		panic(err)
+	}	
+	fmt.Println(columns)
+	for res.Next() {
+		id := 0
+		name := ""
+		password := ""
+		err = res.Scan(&id, &name, &password)
+		if err != nil {
+			panic(err)
+		}	
+		fmt.Println(id, name, password)
+	}
+}
+
+func page_test() {
 	// str := "<h1>this is not from partial</h1>{{template \"test\"}}"
 
 	// site.Tmpl, err = helper.MakeTemplateFromGlobAndCollect("./site_src/partials/*.gohtml")
@@ -100,4 +170,5 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
 }

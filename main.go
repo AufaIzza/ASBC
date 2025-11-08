@@ -2,18 +2,19 @@ package main
 
 import (
 	// "io"
-	// "os"
+	"os"
 	// "bytes"
 	"fmt"
 	// "log"
 	"net/http"
 	"html/template"
 	"database/sql"
-	// "github.com/AufaIzza/ASBC/api"
+	"github.com/AufaIzza/ASBC/api"
 	"github.com/AufaIzza/ASBC/helper"
 	// "github.com/mattn/go-sqlite3"
-	"modernc.org/sqlite"
+	// "modernc.org/sqlite"
 	"flag"
+	"os/signal"
 )
 
 // func rootHandler(w http.ResponseWriter, req *http.Request) {
@@ -52,7 +53,7 @@ func MakeSite(port string, partialsPath string) (*Site, error) {
 	return &site, nil
 }
 
-func (s *Site) Route(path string, filepath string, props map[string]string) {
+func (s *Site) PageRoute(path string, filepath string, props map[string]string) {
 	err := helper.MakePageFromFile(s.Mux, s.Tmpl, path, filepath, props)
 	if err != nil {
 		panic(err)
@@ -66,11 +67,33 @@ func (s *Site) Serve() error {
 
 func (s *Site) StaticPath(path string) {
 	fs := http.FileServer(http.Dir(path))
-	s.Mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	s.Mux.Handle("GET /static/", http.StripPrefix("/static/", fs))
 }
 
+// func main() {
+// 	page_test()
+// 	// err = api.InitDB("./test.db")
+// 	// if err != nil {
+// 	// 	panic(err)
+// 	// }
+// 	// defer api.CloseDB()
+// }
+
 func main() {
-	
+	err = api.InitDB("./test.db", api.DebugModeEnabled)
+	if err != nil {
+		panic(err)
+	}
+	defer api.CloseDB()
+
+	err = api.InitTestDummyDataDB()
+	if err != nil {
+		panic(err)
+	}
+	// stop := make(chan os.Signal, 1)
+	// signal.Notify(stop, os.Interrupt)
+	// <-stop
+	// fmt.Println("Closing app")
 }
 
 func flags_test() {
@@ -161,14 +184,22 @@ func page_test() {
 	// site.Mux.Handle("/", page)
 
 	site, err := MakeSite(":6969", "./site_src/partials/*.gohtml")
+
 	site.StaticPath("./site_src/static/")
-	site.Route("/", "./site_src/pages/index.gohtml", map[string]string {
+	site.PageRoute("GET /", "./site_src/pages/index.gohtml", map[string]string {
 		"title": "ASBC - Main",
 	})
 
-	err = site.Serve()
-	if err != nil {
-		panic(err)
-	}
+	go func() {
+		err = site.Serve()
+		if err != nil {
+			panic(err)
+		}
+	}()
 
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
+	<-stop
+
+	fmt.Println("Stopping server")
 }

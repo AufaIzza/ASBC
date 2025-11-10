@@ -1,67 +1,37 @@
 # ASBC
 ## Features
 - Notes 
-  - Leaderboard
   - Private
   - Sharing
 - Assignment tracker
-  - Reminder notification
+  - Assignment name
   - Assignment description
   - Group assignments feature
+
+## Theme
+- Dark mode
+
 
 ## Things to remove
 - Groups
 - Note Likes
 - Profile
-
+- Assignment notification
 
 ## Database Tables
 - Users
   - ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
   - Username TEXT NOT NULL UNIQUE
-  - Email TEXT NOT NULL UNIQUE
   - Password TEXT NOT NULL
   - TimeCreated INTEGER NOT NULL
   - TimeUpdated INTEGER NOT NULL
-
-- Profile
-  - ID INTERGER PRIMARY KEY NOT NULL
-  - Name TEXT
-  - Biography TEXT
-  - TimeCreated INTEGER NOT NULL
-  - TimeUpdated INTEGER NOT NULL
-  - FOREIGN KEY (ID) REFERENCES Users(ID)
-  - FOREIGN KEY (TimeCreated) REFERENCES Users(TimeCreated)
-
-- Groups
-  - ID INTEGER PRIMARY KEY NOT NULL
-  - InviteCode INTEGER NOT NULL
-  - CreatorID INTEGER NOT NULL
-  - NameTEXT
-  - Description TEXT
-  - MembersCount INTEGER NOT NULL
-  - TimeCreated INTEGER NOT NULL
-  - TimeUpdated INTEGER NOT NULL
-  - FOREIGN KEY (CreatorID) REFERENCES Users(ID)
-
-- GroupsAdmins
-  - UserID INTEGER NOT NULL
-  - GroupID INTEGER NOT NULL
-  - FOREIGN KEY (UserID) REFERENCES Users(ID)
-  - FOREIGN KEY (GroupID) REFERENCES Groups(ID) 
-
-- GroupsUsers
-  - UserID INTEGER NOT NULL
-  - GroupID INTEGER NOT NULL
-  - FOREIGN KEY (UserID) REFERENCES Users(ID)
-  - FOREIGN KEY (GroupID) REFERENCES Groups(ID)
 
 - Notes
   - ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
   - UserID INTEGER NOT NULL
   - Title TEXT NOT NULL
   - Content TEXT NOT NULL
-  - Public INTEGER NOT NULL
+  - IsPublic INTEGER NOT NULL
   - TimeCreated INTEGER NOT NULL
   - TimeUpdated INTEGER NOT NULL
   - FOREIGN KEY (UserID) REFERENCES Users(ID)
@@ -82,28 +52,19 @@
   - UserID INTEGER NOT NULL
   - FOREIGN KEY (NoteID) REFERENCES Notes(ID)
   - FOREIGN KEY (UserID) REFERENCES Users(ID)
-  
-- UsersNotesLikes
-  - NoteID INTEGER NOT NULL
-  - UserID INTEGER NOT NULL
-  - FOREIGN KEY (NoteID) REFERENCES Notes(ID)
-  - FOREIGN KEY (UserID) REFERENCES Users(ID)
-
-- NotesLikes
-  - ID INTEGER PRIMARY KEY NOT NULL
-  - Amount INTEGER NOT NULL
-  - FOREIGN KEY (ID) REFERENCES Notes(ID)
 
 - Assignments
   - ID INTEGER PRIMARY KEY NOT NULL
   - Title TEXT NOT NULL
   - Description TEXT NOT NULL
-  - Done INTEGER NOT NULL
-  - NotificationEnabled INTEGER NOT NULL
-  - NotificationTime INTEGER
-  - CreatorID INTEGER NOT NULL
-  - GroupID INTEGER
+  - IsDone INTEGER NOT NULL
+  - UserID INTEGER NOT NULL
   - TimeCreated INTEGER NOT NULL
   - TimeUpdated INTEGER NOT NULL
-  - FOREIGN KEY (CreatorID) REFERENCES Users(ID)
-  - FOREIGN KEY (GroupID) REFERENCES Groups(ID)
+  - FOREIGN KEY (UserID) REFERENCES Users(ID)
+
+- UserAssignments
+  - AssignmentID INTEGER PRIMARY KEY NOT NULL
+  - UserID INTEGER NOT NULL
+  - FOREIGN KEY (AssignmentID) REFERENCES Assignments(ID)
+  - FOREIGN KEY (UserID) REFERENCES Users(ID)

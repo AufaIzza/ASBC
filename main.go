@@ -1,7 +1,7 @@
 package main
 
 import (
-	// "io"
+	"io"
 	"os"
 	// "bytes"
 	"fmt"
@@ -60,6 +60,14 @@ func (s *Site) PageRoute(path string, filepath string, props map[string]string) 
 	}
 }
 
+func (s *Site) Route(path string, handler http.Handler) {
+	s.Mux.Handle(path, handler)
+}
+
+func (s *Site) RouteFunc(path string, handlerFunc func(http.ResponseWriter, *http.Request)) {
+	s.Mux.HandleFunc(path, handlerFunc)
+}
+
 func (s *Site) Serve() error {
 	fmt.Println("Listening on port ", s.Port)
 	return http.ListenAndServe(s.Port, s.Mux)
@@ -79,7 +87,7 @@ func (s *Site) StaticPath(path string) {
 // 	// defer api.CloseDB()
 // }
 
-func main() {
+func main2() {
 	err = api.InitDB("./test.db", api.DebugModeEnabled)
 	if err != nil {
 		panic(err)
@@ -158,7 +166,7 @@ INSERT INTO posts (userid, content) VALUES (1, 'HELLO WORLD I AM HERE');`)
 	}
 }
 
-func page_test() {
+func main() {
 	// str := "<h1>this is not from partial</h1>{{template \"test\"}}"
 
 	// site.Tmpl, err = helper.MakeTemplateFromGlobAndCollect("./site_src/partials/*.gohtml")
@@ -186,8 +194,11 @@ func page_test() {
 	site, err := MakeSite(":6969", "./site_src/partials/*.gohtml")
 
 	site.StaticPath("./site_src/static/")
-	site.PageRoute("GET /", "./site_src/pages/index.gohtml", map[string]string {
-		"title": "ASBC - Main",
+	
+	site.PageRoute("GET /", "./site_src/pages/index.gohtml", nil)
+
+	site.RouteFunc("GET /api/test", func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, "<p>This is from api</p>")
 	})
 
 	go func() {

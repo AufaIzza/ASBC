@@ -72,7 +72,7 @@ func CloseDB() {
 	fmt.Println("DATABASE: Closing")
 }
 
-func DropTables() err {
+func DropTables() error {
 	err = ExecDB(
 		``)
 	if err != nil {
@@ -81,7 +81,7 @@ func DropTables() err {
 	return nil
 }
 
-func CreateTables() err {
+func CreateTables() error {
 	err = ExecDB(
 		``)
 	if err != nil {

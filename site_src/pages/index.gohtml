@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        {{ template "default_head" index . "title" }}
+        {{ template "default_head" "ASBC - Home" }}
     </head>
     <body>
         <h1>This is a test app</h1>
+        <div hx-get="/api/test" hx-trigger="load" >
+            
+        </div>
     </body>
 </html>

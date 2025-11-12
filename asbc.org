@@ -17,14 +17,13 @@
 - Note Likes
 - Profile
 - Assignment notification
+- TimeCreated and TimeUpdated
 
 ## Database Tables
 - Users
   - ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
   - Username TEXT NOT NULL UNIQUE
   - Password TEXT NOT NULL
-  - TimeCreated INTEGER NOT NULL
-  - TimeUpdated INTEGER NOT NULL
 
 - Notes
   - ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
@@ -32,14 +31,11 @@
   - Title TEXT NOT NULL
   - Content TEXT NOT NULL
   - IsPublic INTEGER NOT NULL
-  - TimeCreated INTEGER NOT NULL
-  - TimeUpdated INTEGER NOT NULL
   - FOREIGN KEY (UserID) REFERENCES Users(ID)
 
 - Tags
   - ID INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL
-  - Name TEXT NOT NULL
-  - TimeCreated INTEGER NOT NULL  
+  - Name TEXT NOT NULL 
 
 - NotesTags
   - NoteID INTEGER NOT NULL
@@ -59,8 +55,6 @@
   - Description TEXT NOT NULL
   - IsDone INTEGER NOT NULL
   - UserID INTEGER NOT NULL
-  - TimeCreated INTEGER NOT NULL
-  - TimeUpdated INTEGER NOT NULL
   - FOREIGN KEY (UserID) REFERENCES Users(ID)
 
 - UserAssignments

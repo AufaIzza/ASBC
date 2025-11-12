@@ -15,6 +15,7 @@ import (
 	// "modernc.org/sqlite"
 	"flag"
 	"os/signal"
+	// "os"
 )
 
 // func rootHandler(w http.ResponseWriter, req *http.Request) {
@@ -69,7 +70,7 @@ func (s *Site) RouteFunc(path string, handlerFunc func(http.ResponseWriter, *htt
 }
 
 func (s *Site) Serve() error {
-	fmt.Println("Listening on port ", s.Port)
+	fmt.Println("Listening on port", s.Port)
 	return http.ListenAndServe(s.Port, s.Mux)
 }
 
@@ -86,6 +87,75 @@ func (s *Site) StaticPath(path string) {
 // 	// }
 // 	// defer api.CloseDB()
 // }
+
+func main() {
+	cleanDB := flag.Bool("clean-db", false, "Clears and initializes the database")
+	seedDB := flag.Bool("seed-db", false, "Inserts dummy seed data into the database")
+	debug := flag.Bool("debug", false, "Enable Debug Mode")
+	startServer := flag.Bool("start-server", false, "Starts the server")
+	flag.Parse()
+
+	if *cleanDB {
+		fmt.Println("Cleaning DB")
+		err = api.InitDB("./database.db", api.DebugMode(*debug))
+		if err != nil {
+			panic(err)
+		}
+		err = api.CleanDB()
+		if err != nil {
+			panic(err)
+		}
+		api.CloseDB()
+		os.Exit(0)
+	}
+
+	if *seedDB {
+		fmt.Println("Cleaning DB")
+		err = api.InitDB("./database.db", api.DebugMode(*debug))
+		if err != nil {
+			panic(err)
+		}
+		err = api.InsertDummyData()
+		if err != nil {
+			panic(err)
+		}
+		api.CloseDB()
+		os.Exit(0)
+	}
+
+	if *startServer {
+		server(api.DebugMode(*debug))
+	}
+}
+
+func server(debug api.DebugMode ) {
+	err = api.InitDB("./database.db", debug)
+	if err != nil {
+		panic(err)
+	}
+	defer api.CloseDB()
+	
+	site, err := MakeSite(":6969", "./site_src/partials/*.gohtml")
+
+	site.StaticPath("./site_src/static/")
+	site.PageRoute("GET /", "./site_src/pages/index.gohtml", nil)
+	site.RouteFunc("GET /api/test", func(w http.ResponseWriter, r *http.Request) {
+		io.WriteString(w, "<p>This is from api</p>")
+	})
+	site.RouteFunc("GET /api/notes", api.AllPublicNotesHandlerTest)
+	go func() {
+		err = site.Serve()
+		if err != nil {
+			panic(err)
+		}
+	}()
+
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt)
+	<-stop
+
+	fmt.Println("Stopping server")
+}
 
 func main2() {
 	err = api.InitDB("./test.db", api.DebugModeEnabled)
@@ -114,7 +184,7 @@ func flags_test() {
 	}
 }
 
-func db_test() {
+func main3() {
 	db, err := sql.Open("sqlite", "./test.db")
 	if err != nil {
 		panic(err)
@@ -166,7 +236,7 @@ INSERT INTO posts (userid, content) VALUES (1, 'HELLO WORLD I AM HERE');`)
 	}
 }
 
-func main() {
+func server_test() {
 	// str := "<h1>this is not from partial</h1>{{template \"test\"}}"
 
 	// site.Tmpl, err = helper.MakeTemplateFromGlobAndCollect("./site_src/partials/*.gohtml")
@@ -214,3 +284,4 @@ func main() {
 
 	fmt.Println("Stopping server")
 }
+

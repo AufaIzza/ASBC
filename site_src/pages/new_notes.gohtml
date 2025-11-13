@@ -7,9 +7,6 @@
         <link rel="stylesheet" href="/static/new_notes.css">
         <link rel="stylesheet" href="/static/navbar.css">
         <script src="/static/htmx.min.js"></script>
-        <script>
-         const checkmarkOnClick = (e) => { if (e.value == "1") { e.value ="0"; } else { e.value ="1"; }}
-        </script>
     </head>
     <body>
         {{ template "navbar" }}
@@ -30,9 +27,9 @@
 
                 <!-- Public or Not -->
                 <!-- <div class="public-check"> -->
-                    <label for="public">Make this note public</label>
-                    <input name="public" type="checkbox" id="public" value="1" onclick="checkmarkOnClick">
-                    <!-- </div> -->
+                <label for="public">Make this note public</label>
+                <input name="public" type="checkbox" id="public" value="1">
+                <!-- </div> -->
 
                 <!-- Tags -->
                 <label for="tags">Tags</label>

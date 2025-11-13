@@ -64,9 +64,15 @@ func NewNoteHandler(w http.ResponseWriter, r *http.Request) {
 		io.WriteString(w, "No User found")
 		return
 	}
-	res, err := strconv.Atoi(r.FormValue("public"))
-	if err != nil {
-		panic(err)
+	pub := r.FormValue("public")
+	var res int
+	if pub == "" {
+		res = 0
+	} else {
+		res, err = strconv.Atoi(pub)
+		if err != nil {
+			panic(err)
+		}
 	}
 	b := NoteBody{
 		Title: r.FormValue("title"),

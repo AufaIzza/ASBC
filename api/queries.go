@@ -71,6 +71,7 @@ WHERE a.UserID = %d AND a.Title = '%s' AND a.Content = '%s' AND a.IsPublic = %d 
 `, userid, title, content, public, tag)
 	
 	rows, err := QueryDB(query)
+	defer rows.Close()
 	if err != nil {
 		// fmt.Println(err)
 		return false, -1, err
@@ -81,9 +82,10 @@ WHERE a.UserID = %d AND a.Title = '%s' AND a.Content = '%s' AND a.IsPublic = %d 
 		if err != nil {
 			return false, -1, err
 		}
-		rows.Close()
+
 		break;
 	}
+
 	return true, id, nil
 }
 
@@ -94,6 +96,7 @@ FROM Users as u
 WHERE u.Username = '%s';
 `, username)
 	rows, err := QueryDB(query)
+	defer rows.Close()
 	if err != nil {
 		return false, err
 	}	
@@ -123,6 +126,7 @@ func QueryAllTags() ([]string, error) {
 SELECT t.Name
 FROM Tags as t;
 `) 
+	defer rows.Close()
 	if err != nil {
 		return []string{}, err
 	}
@@ -137,6 +141,7 @@ FROM Tags as t;
 		}
 		tags = append(tags, str)
 	}
+
 	return tags, nil
 }
 
@@ -147,6 +152,7 @@ FROM Users as u
 WHERE u.Username = '%s';
 `, username)
 	rows, err := QueryDB(query)
+	defer rows.Close()
 	if err != nil {
 		// fmt.Println(err)
 		return false, err, -1
@@ -161,7 +167,7 @@ WHERE u.Username = '%s';
 		if err != nil {
 			return false, err, -1
 		}
-		rows.Close()
+
 		break;
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
@@ -179,6 +185,7 @@ JOIN Users AS b ON a.UserID = b.ID
 WHERE a.ID = %s;
 `, noteID)	
 	rows, err := QueryDB(query)
+	defer rows.Close()
 	if err != nil {
 		return NoteQuery{}, err
 	}
@@ -212,6 +219,7 @@ From Assignments as a
 WHERE a.UserID = %d;
 `, userID)
 	rows, err := QueryDB(query)
+	defer rows.Close()
 	if err != nil {
 		return nil, err
 	}
@@ -230,7 +238,6 @@ WHERE a.UserID = %d;
 		
 		assignments = append(assignments, a)
 	}
-
 	return assignments, nil
 }
 
@@ -243,6 +250,7 @@ JOIN Users as a ON n.UserID = a.ID
 WHERE n.UserID = %d;
 `, id)
 	rows, err := QueryDB(query)
+	defer rows.Close()
 	if err != nil {
 		return nil, err
 	}
@@ -264,7 +272,6 @@ WHERE n.UserID = %d;
 		}
 		notes = append(notes, note)
 	}
-
 	return notes, nil
 }
 
@@ -286,6 +293,7 @@ JOIN Users as a ON n.UserID = a.ID
 WHERE n.IsPublic = 1;
 `
 	rows, err := QueryDB(query)
+	defer rows.Close()
 	if err != nil {
 		return nil, err
 	}
@@ -306,6 +314,5 @@ WHERE n.IsPublic = 1;
 		}
 		notes = append(notes, note)
 	}
-
 	return notes, nil
 }

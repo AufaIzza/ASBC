@@ -172,6 +172,7 @@ INSERT INTO Users (Username, Password) VALUES ('Smith', '$2a$12$cXSkUSaaKSZKW7YK
 INSERT INTO Tags (Name) VALUES ('Programming');
 INSERT INTO Tags (Name) VALUES ('Math');
 `)
+	
 	if err != nil {
 		return err
 	}

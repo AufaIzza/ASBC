@@ -107,6 +107,20 @@ DROP TABLE IF EXISTS Users;
 	return nil
 }
 
+func CreateDefaultData() err {
+	return ExecDB(`
+INSERT INTO Tags (Name) VALUES ('Programming');
+INSERT INTO Tags (Name) VALUES ('Math');
+INSERT INTO Tags (Name) VALUES ('Biology');
+INSERT INTO Tags (Name) VALUES ('Physics');
+INSERT INTO Tags (Name) VALUES ('Chemistry');
+INSERT INTO Tags (Name) VALUES ('Civics');
+INSERT INTO Tags (Name) VALUES ('History');
+INSERT INTO Tags (Name) VALUES ('Art');
+INSERT INTO Tags (Name) VALUES ('Social');
+`)
+}
+
 func CreateTables() error {
 	err = ExecDB(`
 CREATE TABLE Users (

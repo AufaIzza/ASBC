@@ -113,6 +113,7 @@ func getToken(length int) string {
 func main() {
 	cleanDB := flag.Bool("clean-db", false, "Clears and initializes the database")
 	seedDB := flag.Bool("seed-db", false, "Inserts dummy seed data into the database")
+	defaultDB := flag.Bool("default-db", false, "Inserts default data into the database")
 	debug := flag.Bool("debug", false, "Enable Debug Mode")
 	startServer := flag.Bool("start-server", false, "Starts the server")
 	genSessionKey := flag.Bool("gen-session-key", false, "Generate session key")	
@@ -126,6 +127,20 @@ func main() {
 		fmt.Println(getToken(32));
 		os.Exit(0)
 	} 
+	
+	if *defaultDB {
+		fmt.Println("Inserting default data")		
+		err = api.InitDB("./database.db", api.DebugMode(*debug))
+		if err != nil {
+			panic(err)
+		}
+		err = api.CreateDefaultData()
+		if err != nil {
+			panic(err)
+		}
+		api.CloseDB()
+		os.Exit(0)		
+	}
 
 	if *cleanDB {
 		fmt.Println("Cleaning DB")
@@ -189,7 +204,7 @@ func server(debug api.DebugMode ) {
 		if err != nil {
 			panic(err)
 		}
-		if !note.IsPublic {
+		if note.IsPublic == 0 {
 			_, id, ok := api.GetSessionUser(r)
 			if !ok || id != note.UserID {
 				io.WriteString(w, "Not Allowed")
@@ -232,6 +247,10 @@ func server(debug api.DebugMode ) {
 
 	site.PageRouteDef("GET /assignments", "./site_src/pages/view_all_assignment.gohtml", nil)
 
+	site.PageRouteDef("GET /public_notes", "./site_src/pages/view_all_public_notes.gohtml", nil)
+
+	site.PageRouteDef("GET /private_notes", "./site_src/pages/view_all_private_notes.gohtml", nil)
+
 	
 	// site.RouteFunc("GET /api/test", func(w http.ResponseWriter, r *http.Request) {
 	// 	io.WriteString(w, "<p>This is from api</p>")
@@ -246,9 +265,12 @@ func server(debug api.DebugMode ) {
 	site.RouteFunc("PATCH /api/check_assignment/{assignmentID}/{isDone}", api.CheckAssignmentHandler)
 
 	site.RouteFunc("PUT /api/delete_assignment/{id}", api.DeleteAssignmentHandler)
+	site.RouteFunc("PUT /api/delete_note/{id}", api.DeleteNoteHandler)
 
 	site.RouteFunc("GET /api/notes", api.AllPublicNotesHandlerTest)
 	site.RouteFunc("GET /api/assignments", api.AllAssignmentHandler)
+	site.RouteFunc("GET /api/public_notes", api.AllPublicNotesHandler)
+	site.RouteFunc("GET /api/private_notes", api.AllPrivateNotesHandler)
 	site.RouteFunc("GET /api/navbaruser", api.NavBarUserHandler)
 	go func() {
 		err = site.Serve()

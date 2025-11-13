@@ -16,7 +16,7 @@ type NoteQuery struct {
 	Title string
 	Content string
 	TagName string
-	IsPublic bool
+	IsPublic int
 	UserID int
 	Username string
 }
@@ -232,10 +232,53 @@ WHERE a.UserID = %d;
 	return assignments, nil
 }
 
+func QueryAllPrivateNotes(id int) ([]NoteQuery, error) {
+	var notes []NoteQuery
+	query := fmt.Sprintf(`
+SELECT n.ID, n.Title, n.Content, n.UserID, a.Username, n.IsPublic, n.TagName
+FROM Notes as n
+JOIN Users as a ON n.UserID = a.ID
+WHERE n.UserID = %d;
+`, id)
+	rows, err := QueryDB(query)
+	if err != nil {
+		return nil, err
+	}
+
+
+	for rows.Next() {
+		note := NoteQuery{}
+		err := rows.Scan(
+			&note.ID,
+			&note.Title,
+			&note.Content,
+			&note.UserID,
+			&note.Username,
+			&note.IsPublic,
+			&note.TagName,
+		)
+		if err != nil {
+			return nil, err
+		}
+		notes = append(notes, note)
+	}
+
+	return notes, nil
+}
+
+func ExecDeleteNote(noteID int, userID int) error {
+	query := fmt.Sprintf(`
+DELETE FROM Notes
+WHERE ID = %d AND UserID = %d
+`, noteID, userID)
+	return ExecDB(query)
+}
+
+
 func QueryAllPublicNotes() ([]NoteQuery, error) {
 	var notes []NoteQuery
 	query := `
-SELECT n.ID, n.Title, n.Content, n.UserID, a.Username
+SELECT n.ID, n.Title, n.Content, n.UserID, a.Username, n.TagName
 FROM Notes as n
 JOIN Users as a ON n.UserID = a.ID
 WHERE n.IsPublic = 1;
@@ -254,6 +297,7 @@ WHERE n.IsPublic = 1;
 			&note.Content,
 			&note.UserID,
 			&note.Username,
+			&note.TagName,
 		)
 		if err != nil {
 			return nil, err

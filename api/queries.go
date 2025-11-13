@@ -81,6 +81,7 @@ WHERE a.UserID = %d AND a.Title = '%s' AND a.Content = '%s' AND a.IsPublic = %d 
 		if err != nil {
 			return false, -1, err
 		}
+		rows.Close()
 		break;
 	}
 	return true, id, nil
@@ -160,6 +161,7 @@ WHERE u.Username = '%s';
 		if err != nil {
 			return false, err, -1
 		}
+		rows.Close()
 		break;
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))

@@ -187,7 +187,7 @@ func server(debug api.DebugMode ) {
 	}
 	defer api.CloseDB()
 
-	site, err := MakeSite(":6969", "./site_src/partials/*.gohtml")
+	site, err := MakeSite("[::]:8100", "./site_src/partials/*.gohtml")
 
 	site.StaticPath("./site_src/static/")
 

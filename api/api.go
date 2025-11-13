@@ -107,7 +107,7 @@ DROP TABLE IF EXISTS Users;
 	return nil
 }
 
-func CreateDefaultData() err {
+func CreateDefaultData() error {
 	return ExecDB(`
 INSERT INTO Tags (Name) VALUES ('Programming');
 INSERT INTO Tags (Name) VALUES ('Math');

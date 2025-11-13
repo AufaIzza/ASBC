@@ -313,6 +313,7 @@ func NavBarUserHandler(w http.ResponseWriter, r *http.Request) {
 	logged_in := `
 <a href="/private_notes">Personal Notes</a>
 <a href="/assignments">Assignments</a>
+<a href="/new_note">New Note</a>
 <a href="/logout">Logout</a>
 `
 	logged_out := `

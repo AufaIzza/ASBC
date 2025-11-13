@@ -1,12 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        {{ template "default_head" "ASBC - Home" }}
-    </head>
-    <body>
-        <h1>This is a test app</h1>
-        <div hx-get="/api/test" hx-trigger="load" >
-            
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASBC | Your Student's Best Companion</title>
+    <script src="/static/htmx.min.js"></script>
+    <link rel="stylesheet" href="/static/index.css">
+    <link rel="stylesheet" href="/static/navbar.css">
+</head>
+<body>
+    {{ template "navbar" }}
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <h1>ASBC</h1>
+            <p>Your Student's Best Companion for Managing Coursework</p>
         </div>
-    </body>
+    </header>
+
+    <!-- Introduction Section -->
+    <section class="intro">
+        <div class="container">
+            <h2>Welcome to ASBC</h2>
+            <p>
+                Are you a student feeling overwhelmed by the sheer volume of assignments? 
+                Do you often struggle to manage your time and avoid piling up tasks? 
+                <strong>ASBC</strong> is here as the best solution for you.
+            </p>
+            <p>
+                ASBC (A Student's Best Companion) is an innovative web platform specifically designed to help students 
+                organize and manage their coursework effectively.
+            </p>
+        </div>
+    </section>
+
+    <!-- Why Choose ASBC -->
+    <section class="why">
+        <div class="container">
+            <h2>Why is ASBC the Best Choice?</h2>
+            <ul>
+                <li><strong>Easy to Use:</strong> An intuitive and easy-to-use interface, even for first-time users.</li>
+                <li><strong>Access Anywhere:</strong> Access ASBC anytime, anywhere through any device connected to the internet.</li>
+                <li><strong>Free:</strong> ASBC is free to use with essential features to manage your coursework effectively.</li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="cta">
+        <div class="container">
+            <h2>Join ASBC Now!</h2>
+            <p>Don’t let coursework pile up and stress you out. Experience the benefits of managing your coursework more effectively and efficiently.</p>
+            <a href="#" class="btn">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>© 2025 ASBC | A Student’s Best Companion</p>
+    </footer>
+
+</body>
 </html>

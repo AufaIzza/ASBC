@@ -1,0 +1,157 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #22223b;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.view-note-container {
+    background: #4a4e69;
+    border-radius: 10px;
+    padding: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.note-header {
+    border-bottom: 2px solid #9a8c98;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+.note-title {
+    font-size: 26px;
+    color: #f2e9e4;
+    margin-bottom: 10px;
+}
+
+.note-meta {
+    color: #c9ada7;
+    font-size: 14px;
+}
+
+.tag {
+    background: #9a8c98;
+    color: #22223b;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-left: 10px;
+}
+
+.note-content {
+    line-height: 1.7;
+    color: #f2e9e4;
+    font-size: 15px;
+    margin-bottom: 25px;
+}
+
+.note-content p {
+    margin-bottom: 12px;
+}
+
+.visibility-control {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 15px;
+    background: #22223b;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #9a8c98;
+}
+
+.visibility-control input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.visibility-control label {
+    color: #f2e9e4;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.checklist {
+    background: #22223b;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 1px solid #9a8c98;
+}
+
+.checklist-title {
+    font-size: 18px;
+    color: #f2e9e4;
+    margin-bottom: 12px;
+}
+
+.checklist-item {
+    padding: 8px;
+    margin-bottom: 6px;
+    color: #c9ada7;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.checklist-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.btn {
+    padding: 10px 25px;
+    border-radius: 6px;
+    border: none;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background: #9a8c98;
+    color: #22223b;
+}
+
+.btn-primary:hover {
+    background: #c9ada7;
+}
+
+.btn-secondary {
+    background: #22223b;
+    color: #f2e9e4;
+    border: 1px solid #9a8c98;
+}
+
+.btn-secondary:hover {
+    background: #4a4e69;
+}
+
+.visibility-badge {
+    background: #c9ada7;
+    color: #22223b;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-left: 10px;
+    font-weight: bold;
+}

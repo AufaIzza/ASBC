@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Add New Note</title>
+        <link rel="stylesheet" href="/static/new_notes.css">
+        <link rel="stylesheet" href="/static/navbar.css">
+        <script src="/static/htmx.min.js"></script>
+        <script>
+         const checkmarkOnClick = (e) => { if (e.value == "1") { e.value ="0"; } else { e.value ="1"; }}
+        </script>
+    </head>
+    <body>
+        {{ template "navbar" }}
+        <header>
+            <h1>Add New Note</h1>
+            <p>Create a new note for any subject</p>
+        </header>
+
+        <div class="form-container">
+            <form hx-post="/api/new_note" class="new-note-form">
+                <!-- Title -->
+                <label for="title">Title</label>
+                <input name="title" required type="text" id="title" placeholder="Enter note title...">
+
+                <!-- Content -->
+                <label for="content">Content</label>
+                <textarea name="content" required id="content" rows="5" placeholder="Write the content of your note..."></textarea>
+
+                <!-- Public or Not -->
+                <div class="public-check">
+                    <input name="public" type="checkbox" id="public" value="1" onclick="checkmarkOnClick">
+                    <label for="public">Make this note public</label>
+                </div>
+
+                <!-- Tags -->
+                <label for="tags">Tags</label>
+                <select name="tag" required id="tags">
+                    <option disabled value="">Select tag...</option>
+                    {{ range $i, $t := . }}
+                        <option value="{{ $t }}">{{ $t }}</option>
+                    {{ end }}
+                </select>
+
+                <!-- Submit -->
+                <button type="submit" class="submit-btn">Submit</button>
+            </form>
+        </div>
+
+        <footer>
+            <p>© 2025 ASBC | A Student’s Best Companion</p>
+        </footer>
+    </body>
+</html>

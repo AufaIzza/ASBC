@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>ASBC | Your Student's Best Companion</title>
+        <link rel="stylesheet" href="/static/view_note.css">
+        <link rel="stylesheet" href="/static/navbar.css">
+        <script src="/static/htmx.min.js"></script>
+    </head>
+    <body>
+        {{ template "navbar" }}
+        <div class="container">
+            <!-- View Note Page -->
+            <div class="view-note-container">
+                <div class="note-header">
+                    <h1 class="note-title">
+                        {{ .Title }}
+                        <span class="visibility-badge">{{ if .IsPublic }} Public {{ else }} Private {{ end }}</span>
+                    </h1>
+                    <div class="note-meta">
+                        <span class="tag">{{ .Username }}</span>
+                        <span class="tag">{{ .TagName }}</span>
+                    </div>
+                </div>
+
+                <div class="note-content">
+                    <span>{{ .Content }}</span>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

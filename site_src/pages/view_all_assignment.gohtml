@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>View All Assignments</title>
+        <link rel="stylesheet" href="/static/view_all_assignment.css">
+        <link rel="stylesheet" href="/static/navbar.css">
+        <script src="/static/htmx.min.js"></script>
+    </head>
+    <body>
+        {{ template "navbar" }}
+        <header>
+            <h1>View All Assignments</h1>
+            <p>Track and manage your tasks easily</p>
+        </header>
+
+        <div class="container" hx-get="/api/assignments" hx-trigger="load">
+            
+        </div>
+
+        <footer>
+            <p>© 2025 ASBC | A Student’s Best Companion</p>
+        </footer>
+    </body>
+</html>

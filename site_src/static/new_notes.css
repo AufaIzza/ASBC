@@ -1,0 +1,90 @@
+.form-container {
+  width: 80%;
+  max-width: 600px;
+  margin: 3rem auto;
+  background-color: #F2E9E4;
+  border: 2px solid #C9ADA7;
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+}
+
+.new-note-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.new-note-form label {
+  font-weight: 600;
+  color: #4A4E69;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.new-note-form input[type="text"],
+.new-note-form textarea,
+.new-note-form select {
+  border: 2px solid #9A8C98;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: #EDE8E4;
+  color: #22223B;
+  font-size: 1rem;
+}
+
+.new-note-form textarea {
+  resize: none;
+}
+
+.public-check {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+  gap: 10px;
+}
+
+.public-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: #4A4E69;
+}
+
+/* Submit Button */
+.submit-btn {
+  margin-top: 2rem;
+  padding: 12px;
+  background-color: #4A4E69;
+  color: #F2E9E4;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  background-color: #22223B;
+}
+
+header {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: #22223B;
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-weight: 400;
+  color: #22223B;
+}
+
+/* Add top space for form */
+.form-container {
+  margin-top: 2rem;
+}

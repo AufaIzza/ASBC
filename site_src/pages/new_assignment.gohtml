@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASBC | New Assignment</title>
+    <link rel="stylesheet" href="/static/new_assignment.css">
+    <link rel="stylesheet" href="/static/navbar.css">
+    <script src="/static/htmx.min.js"></script>
+</head>
+<body>
+    {{ template "navbar" }}
+    <div class="assignment-container">
+        <div class="assignment-box">
+            <h1>ASBC</h1>
+            <p class="subtitle">NEW ASSIGNMENT</p>
+
+            <form hx-post="/api/new_assignment">
+                <label for="title">Title</label>
+                <input name="title" type="text" id="title" placeholder="Enter assignment title" required>
+
+                <label for="description">Description</label>
+                <textarea name="description" id="description" placeholder="Enter assignment description" required></textarea>
+
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
